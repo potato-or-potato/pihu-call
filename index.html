@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #fff1eb, #ace0f9);
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
             color: #444;
             margin: 0;
             padding: 0;
@@ -19,11 +19,12 @@
         }
         h1 {
             font-size: 2.5rem;
-            color: #444;
+            color: #5a5a5a;
+            margin-bottom: 10px;
         }
         p {
             font-size: 1.2rem;
-            color: #555;
+            color: #666;
             text-align: center;
             margin: 10px 20px;
         }
@@ -31,24 +32,79 @@
             margin-top: 20px;
             padding: 10px 20px;
             background-color: #fff;
-            color: #ace0f9;
-            border: 2px solid #ace0f9;
+            color: #fcb69f;
+            border: 2px solid #fcb69f;
             border-radius: 5px;
             font-size: 1.2rem;
             cursor: pointer;
         }
         .button:hover {
-            background-color: #ace0f9;
+            background-color: #fcb69f;
             color: #fff;
+        }
+        canvas {
+            border: 2px solid #fcb69f;
+            margin-top: 20px;
+        }
+        .game-instructions {
+            font-size: 1rem;
+            color: #555;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Hey Pihu! 🌟</h1>
-    <p>Just thought I’d make something while you’re busy on your call.  
-    It’s nothing fancy, just a little corner to say you’re doing amazing—like always. 🙂</p>
-    <p>Sometimes, it’s the little things—like waiting to hear from you or seeing your messages—that feel like the best part of the day.  
-    Take your time, finish your call, and know someone’s here waiting (and maybe smiling a little too much). 😋</p>
-    <button class="button" onclick="alert('Hey, just a reminder: you’re doing great! 😊')">Click Me!</button>
+    <h1>Hey Pihu! 🧸</h1>
+    <p>While you're busy on your call, Teddy and I came up with a fun little game for you!  
+    It’s nothing fancy, but it’ll definitely make you smile (I hope!). 😊</p>
+    <div class="game-instructions">🎮 Catch Teddy as he jumps around the screen! Click on him to score points. 🎉</div>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <button class="button" onclick="alert('You’re amazing, Pihu! Keep smiling! 😊')">Click Me for a Surprise!</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let teddyX = Math.random() * 350;
+        let teddyY = Math.random() * 350;
+        let score = 0;
+
+        function drawTeddy() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fcb69f';
+            ctx.beginPath();
+            ctx.arc(teddyX + 25, teddyY + 25, 25, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '18px Arial';
+            ctx.fillText('🐻', teddyX + 10, teddyY + 35);
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            if (
+                clickX >= teddyX &&
+                clickX <= teddyX + 50 &&
+                clickY >= teddyY &&
+                clickY <= teddyY + 50
+            ) {
+                score++;
+                teddyX = Math.random() * 350;
+                teddyY = Math.random() * 350;
+                alert(`Yay! You caught Teddy! 🎉 Your score: ${score}`);
+            }
+        });
+
+        setInterval(() => {
+            teddyX = Math.random() * 350;
+            teddyY = Math.random() * 350;
+            drawTeddy();
+        }, 2000);
+
+        drawTeddy();
+    </script>
 </body>
 </html>
