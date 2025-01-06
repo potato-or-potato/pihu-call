@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save Potato!</title>
+    <title>Save Potato! 🧸</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #ffecd2, #fcb69f);
+            background: linear-gradient(to bottom, #fff1eb, #ace0f9);
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,30 +15,24 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            color: #333;
+            color: #444;
         }
 
         h1 {
             font-size: 2rem;
-            margin: 0;
+            margin: 10px;
         }
 
         p {
             font-size: 1rem;
             text-align: center;
-            margin: 10px;
+            margin: 5px 15px;
             color: #555;
         }
 
-        .instructions {
-            font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 20px;
-        }
-
         canvas {
-            background: #fff;
-            border: 2px solid #fcb69f;
+            background: #f8f8f8;
+            border: 2px solid #ace0f9;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
@@ -47,56 +41,59 @@
             margin-top: 15px;
             padding: 10px 15px;
             font-size: 1rem;
-            color: #fcb69f;
+            color: #ace0f9;
             background: #fff;
-            border: 2px solid #fcb69f;
+            border: 2px solid #ace0f9;
             border-radius: 5px;
             cursor: pointer;
         }
 
         .button:hover {
-            background: #fcb69f;
+            background: #ace0f9;
             color: #fff;
         }
     </style>
 </head>
 <body>
     <h1>Save Potato! 🐻</h1>
-    <p>Potato is falling off the bed! Catch him before he hits the ground!</p>
-    <p class="instructions">Drag the bed left and right with your finger to catch Potato. How long can you keep him safe?</p>
+    <p>Oh no! Potato is falling from the bed. Use your pillow to catch him before he hits the floor!</p>
+    <p>Drag the pillow under Potato to hug him and keep him safe. Can you catch him every time? 😊</p>
     <canvas id="gameCanvas" width="300" height="500"></canvas>
-    <button class="button" onclick="alert('You’re Potato’s hero! 🥰')">Click Me for a Hug</button>
+    <button class="button" onclick="alert('Great job keeping Potato safe! He sends you a BIG hug back! 🧸💖')">Click for a Hug!</button>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
         // Game variables
-        let potatoX = Math.random() * 270; // X position of Potato
-        let potatoY = 0; // Y position of Potato
+        let potatoX = Math.random() * 270; // Starting X position of Potato
+        let potatoY = 0; // Starting Y position of Potato
         const potatoSize = 30;
-        const bedWidth = 80;
-        const bedHeight = 10;
-        let bedX = (canvas.width - bedWidth) / 2; // Bed's starting X position
-        const bedY = canvas.height - 50; // Bed's Y position
-        let speedY = 2; // Falling speed
+        const pillowWidth = 80;
+        const pillowHeight = 15; // Reduced height for pillow
+        let pillowX = (canvas.width - pillowWidth) / 2; // Starting X position of Pillow
+        const pillowY = canvas.height - 40; // Pillow position
+        let speedY = 2; // Falling speed of Potato
         let score = 0;
 
         // Draw Potato
         function drawPotato() {
-            ctx.fillStyle = "#fcb69f";
+            ctx.fillStyle = "#ace0f9";
             ctx.beginPath();
             ctx.arc(potatoX + potatoSize / 2, potatoY + potatoSize / 2, potatoSize / 2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = "#333";
+            ctx.fillStyle = "#555";
             ctx.font = "18px Arial";
             ctx.fillText("🐻", potatoX + 5, potatoY + 25);
         }
 
-        // Draw Bed
-        function drawBed() {
-            ctx.fillStyle = "#555";
-            ctx.fillRect(bedX, bedY, bedWidth, bedHeight);
+        // Draw Pillow
+        function drawPillow() {
+            ctx.fillStyle = "#aaa";
+            ctx.fillRect(pillowX, pillowY, pillowWidth, pillowHeight);
+            ctx.fillStyle = "#fff";
+            ctx.font = "14px Arial";
+            ctx.fillText("🛏️ Pillow", pillowX + 10, pillowY - 5);
         }
 
         // Draw Score
@@ -106,12 +103,12 @@
             ctx.fillText(`Score: ${score}`, 10, 20);
         }
 
-        // Mobile touch controls
+        // Handle touch controls for mobile
         canvas.addEventListener("touchmove", (e) => {
             const touchX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-            bedX = touchX - bedWidth / 2;
-            if (bedX < 0) bedX = 0;
-            if (bedX + bedWidth > canvas.width) bedX = canvas.width - bedWidth;
+            pillowX = touchX - pillowWidth / 2;
+            if (pillowX < 0) pillowX = 0;
+            if (pillowX + pillowWidth > canvas.width) pillowX = canvas.width - pillowWidth;
         });
 
         // Game loop
@@ -120,22 +117,22 @@
 
             // Draw elements
             drawPotato();
-            drawBed();
+            drawPillow();
             drawScore();
 
             // Move Potato
             potatoY += speedY;
 
-            // Check for collision with bed
+            // Check for collision with Pillow
             if (
-                potatoY + potatoSize > bedY &&
-                potatoX + potatoSize > bedX &&
-                potatoX < bedX + bedWidth
+                potatoY + potatoSize > pillowY &&
+                potatoX + potatoSize > pillowX &&
+                potatoX < pillowX + pillowWidth
             ) {
                 potatoY = 0; // Reset Potato to top
                 potatoX = Math.random() * (canvas.width - potatoSize);
                 score++; // Increase score
-                speedY += 0.2; // Increase speed slightly
+                speedY += 0.2; // Gradually increase difficulty
             }
 
             // Check if Potato hits the ground
