@@ -3,108 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pihu's Corner</title>
+    <title>Save Potato!</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ffecd2, #fcb69f);
-            color: #444;
+            background: linear-gradient(to bottom, #ffecd2, #fcb69f);
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             height: 100vh;
+            color: #333;
         }
+
         h1 {
-            font-size: 2.5rem;
-            color: #5a5a5a;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin: 0;
         }
+
         p {
-            font-size: 1.2rem;
-            color: #666;
+            font-size: 1rem;
             text-align: center;
-            margin: 10px 20px;
+            margin: 10px;
+            color: #555;
         }
+
+        .instructions {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            background: #fff;
+            border: 2px solid #fcb69f;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
         .button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #fff;
+            margin-top: 15px;
+            padding: 10px 15px;
+            font-size: 1rem;
             color: #fcb69f;
+            background: #fff;
             border: 2px solid #fcb69f;
             border-radius: 5px;
-            font-size: 1.2rem;
             cursor: pointer;
         }
+
         .button:hover {
-            background-color: #fcb69f;
+            background: #fcb69f;
             color: #fff;
-        }
-        canvas {
-            border: 2px solid #fcb69f;
-            margin-top: 20px;
-        }
-        .game-instructions {
-            font-size: 1rem;
-            color: #555;
-            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Hey Pihu! 🧸</h1>
-    <p>While you're busy on your call, Teddy and I came up with a fun little game for you!  
-    It’s nothing fancy, but it’ll definitely make you smile (I hope!). 😊</p>
-    <div class="game-instructions">🎮 Catch Teddy as he jumps around the screen! Click on him to score points. 🎉</div>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <button class="button" onclick="alert('You’re amazing, Pihu! Keep smiling! 😊')">Click Me for a Surprise!</button>
+    <h1>Save Potato! 🐻</h1>
+    <p>Potato is falling off the bed! Catch him before he hits the ground!</p>
+    <p class="instructions">Drag the bed left and right with your finger to catch Potato. How long can you keep him safe?</p>
+    <canvas id="gameCanvas" width="300" height="500"></canvas>
+    <button class="button" onclick="alert('You’re Potato’s hero! 🥰')">Click Me for a Hug</button>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-        let teddyX = Math.random() * 350;
-        let teddyY = Math.random() * 350;
+        // Game variables
+        let potatoX = Math.random() * 270; // X position of Potato
+        let potatoY = 0; // Y position of Potato
+        const potatoSize = 30;
+        const bedWidth = 80;
+        const bedHeight = 10;
+        let bedX = (canvas.width - bedWidth) / 2; // Bed's starting X position
+        const bedY = canvas.height - 50; // Bed's Y position
+        let speedY = 2; // Falling speed
         let score = 0;
 
-        function drawTeddy() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#fcb69f';
+        // Draw Potato
+        function drawPotato() {
+            ctx.fillStyle = "#fcb69f";
             ctx.beginPath();
-            ctx.arc(teddyX + 25, teddyY + 25, 25, 0, Math.PI * 2);
+            ctx.arc(potatoX + potatoSize / 2, potatoY + potatoSize / 2, potatoSize / 2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.font = '18px Arial';
-            ctx.fillText('🐻', teddyX + 10, teddyY + 35);
+            ctx.fillStyle = "#333";
+            ctx.font = "18px Arial";
+            ctx.fillText("🐻", potatoX + 5, potatoY + 25);
         }
 
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const clickY = e.clientY - rect.top;
+        // Draw Bed
+        function drawBed() {
+            ctx.fillStyle = "#555";
+            ctx.fillRect(bedX, bedY, bedWidth, bedHeight);
+        }
 
-            if (
-                clickX >= teddyX &&
-                clickX <= teddyX + 50 &&
-                clickY >= teddyY &&
-                clickY <= teddyY + 50
-            ) {
-                score++;
-                teddyX = Math.random() * 350;
-                teddyY = Math.random() * 350;
-                alert(`Yay! You caught Teddy! 🎉 Your score: ${score}`);
-            }
+        // Draw Score
+        function drawScore() {
+            ctx.fillStyle = "#333";
+            ctx.font = "16px Arial";
+            ctx.fillText(`Score: ${score}`, 10, 20);
+        }
+
+        // Mobile touch controls
+        canvas.addEventListener("touchmove", (e) => {
+            const touchX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+            bedX = touchX - bedWidth / 2;
+            if (bedX < 0) bedX = 0;
+            if (bedX + bedWidth > canvas.width) bedX = canvas.width - bedWidth;
         });
 
-        setInterval(() => {
-            teddyX = Math.random() * 350;
-            teddyY = Math.random() * 350;
-            drawTeddy();
-        }, 2000);
+        // Game loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        drawTeddy();
+            // Draw elements
+            drawPotato();
+            drawBed();
+            drawScore();
+
+            // Move Potato
+            potatoY += speedY;
+
+            // Check for collision with bed
+            if (
+                potatoY + potatoSize > bedY &&
+                potatoX + potatoSize > bedX &&
+                potatoX < bedX + bedWidth
+            ) {
+                potatoY = 0; // Reset Potato to top
+                potatoX = Math.random() * (canvas.width - potatoSize);
+                score++; // Increase score
+                speedY += 0.2; // Increase speed slightly
+            }
+
+            // Check if Potato hits the ground
+            if (potatoY + potatoSize > canvas.height) {
+                alert(`Oh no! Potato hit the ground! Final Score: ${score}`);
+                document.location.reload();
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the game
+        gameLoop();
     </script>
 </body>
 </html>
