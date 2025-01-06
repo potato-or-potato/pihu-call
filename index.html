@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #fff1eb, #ace0f9);
+            background: linear-gradient(to bottom, #ffecd2, #fcb69f);
             margin: 0;
             padding: 0;
             display: flex;
@@ -32,7 +32,7 @@
 
         canvas {
             background: #f8f8f8;
-            border: 2px solid #ace0f9;
+            border: 2px solid #fcb69f;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
@@ -41,25 +41,25 @@
             margin-top: 15px;
             padding: 10px 15px;
             font-size: 1rem;
-            color: #ace0f9;
+            color: #fcb69f;
             background: #fff;
-            border: 2px solid #ace0f9;
+            border: 2px solid #fcb69f;
             border-radius: 5px;
             cursor: pointer;
         }
 
         .button:hover {
-            background: #ace0f9;
+            background: #fcb69f;
             color: #fff;
         }
     </style>
 </head>
 <body>
     <h1>Save Potato! 🐻</h1>
-    <p>Oh no! Potato is falling from the bed. Use your pillow to catch him before he hits the floor!</p>
-    <p>Drag the pillow under Potato to hug him and keep him safe. Can you catch him every time? 😊</p>
+    <p>BREAKING NEWS: Potato is attempting his nightly escape from the bed again. Can you stop him? 😱</p>
+    <p>Your mission: Use the pillow to catch Potato before he makes a dramatic dive to the floor. 🛏️</p>
     <canvas id="gameCanvas" width="300" height="500"></canvas>
-    <button class="button" onclick="alert('Great job keeping Potato safe! He sends you a BIG hug back! 🧸💖')">Click for a Hug!</button>
+    <button class="button" onclick="alert('Congratulations! Potato says: I owe you the BIGGEST hug ever! 🧸💖')">Click for Potato's Hug!</button>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
@@ -78,7 +78,7 @@
 
         // Draw Potato
         function drawPotato() {
-            ctx.fillStyle = "#ace0f9";
+            ctx.fillStyle = "#fcb69f";
             ctx.beginPath();
             ctx.arc(potatoX + potatoSize / 2, potatoY + potatoSize / 2, potatoSize / 2, 0, Math.PI * 2);
             ctx.fill();
@@ -137,7 +137,7 @@
 
             // Check if Potato hits the ground
             if (potatoY + potatoSize > canvas.height) {
-                alert(`Oh no! Potato hit the ground! Final Score: ${score}`);
+                alert(`MISSION FAILED! Potato hit the floor! Final Score: ${score}. Don't worry, he's still adorable. 🐻`);
                 document.location.reload();
             }
 
